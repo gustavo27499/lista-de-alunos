@@ -1,0 +1,55 @@
+<a href="cadastrar.html"><button>Voltar</button></a>
+<h3>Adicionar Novo Aluno</h3>
+Nome: 
+<input type="text" id="nome" name="nome" value="">
+<br>
+Nascimento: 
+<input type="date" id="nascimento" name="nascimento" value="">
+<br>
+Telefone: 
+<input type="text" id="telefone" name="telefone" value="">
+<br>
+Endereço: 
+<input type="text" id="endereco" name="endereco" value="">
+<br>
+<input type="hidden" name="acao" value="inserir">
+<button onclick="atualizar()">cadastrar</button>
+
+<script>
+
+    const parametros = new URLSearchParams(window.location.search);
+    var id = parametros.get("id")
+    var nome = parametros.get("nome")
+    var tel = parametros.get("tel")
+    var end = parametros.get("end")
+    var data = parametros.get("data")
+
+    document.getElementById('nome').value = nome
+    document.getElementById('telefone').value = tel
+    document.getElementById('endereco').value= end
+    document.getElementById('nascimento').value = data
+
+    function atualizar() {
+        var token = "b8f0dbf24fc34e3db128848be6850d95";
+        //  Exemplo de requisição PUT para atualizar uma pessoa existente
+        fetch("https://crudcrud.com/api/"+token+"/pessoas/"+id, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                nome: document.getElementById('nome').value,
+                nascimento: document.getElementById('nascimento').value,
+                endereco: document.getElementById('endereco').value,
+                telefone: document.getElementById('telefone').value
+            })
+            })
+            .then(() => console.log("Pessoa atualizado com sucesso"))
+            .catch(error => console.log(error))
+            .finally(() => {
+            // redirecionar para a pagina inicial
+            setTimeout(window.location.href = "cadastrar.html", 2000);
+            
+        });
+    }
+</script>
